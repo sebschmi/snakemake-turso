@@ -102,6 +102,7 @@ rule bcalm2:
     output: assembly = ASSEMBLY,
     conda:  "config/conda-bcalm2-env.yml",
     params:
+            workdir = lambda wildcards, output: os.path.basename(output.assembly)
     # The maximum number of threads usable by your rule. I am not sure if this is needed, since it is always the same as resources.cpus.
     threads: MAX_THREADS,
                # The amount of RAM your job needs at max. If your job requests more at any time, it will be killed.
@@ -113,7 +114,8 @@ rule bcalm2:
                # The federation queue your job should be placed in. This depends on which cluster you use, but at least vorna and ukko2 both have a "short" queue.
                queue = "short",
     shell:  """
-        bcalm -nb-cores {threads} -in {input.reads} -out {output.assembly} -kmer-size {wildcards.k} -abundance-min 2
+        cd '{params.workdir}'
+        bcalm -nb-cores {threads} -in '{input.reads}' -out '{output.assembly}' -kmer-size {wildcards.k} -abundance-min 2
         mv '{output.assembly}.unitigs.fa' '{output.assembly}'
     """
 
