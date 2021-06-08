@@ -31,7 +31,7 @@ rule <your_rule_name>:
 Keep in mind that on the login node, only light computations should be performed, like e.g. compiles or downloads.
 Downloads are only possible on the login node, as the other nodes do not have a connection to the internet.
 
-If you want to execute a rule on the cluster, you specify it as `rule`, and you need to add a `resources` section. Take a look at the `bcalm2` rule in the `Snakefile` for an example.
+If you want to execute a rule on a compute node, you specify it as `rule`, and you need to add a `resources` section. Take a look at the `bcalm2` rule in the `Snakefile` for an example.
 
 ## Running
 
