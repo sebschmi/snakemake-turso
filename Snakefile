@@ -55,8 +55,8 @@ print("Finished config preprocessing", flush = True)
 # I like to have global constants for most involved file patterns to prevent typos.
 # I keep single letter abreviations in front of the wildcards to make the resulting paths more readable.
 # Helps especially when there are many arguments.
-READS_SRA = os.path.join(DATADIR, "reads", "s{species}-k{k}", "sra", "reads.sra")
-READS_FASTA = os.path.join(DATADIR, "reads", "s{species}-k{k}", "fasta", "reads.fa")
+READS_SRA = os.path.join(DATADIR, "reads", "s{species}", "sra", "reads.sra")
+READS_FASTA = os.path.join(DATADIR, "reads", "s{species}", "fasta", "reads.fa")
 ASSEMBLY_SOURCE_READS = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "reads.fa")
 ASSEMBLY = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "assembly.fa")
 ASSEMBLY_LOG = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "assembly.log")
