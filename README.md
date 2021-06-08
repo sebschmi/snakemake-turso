@@ -22,7 +22,12 @@ conda activate <your-environment-name>
 ## Programming
 
 Take a look at the template `Snakefile`.
-Basically, whenever you want a rule to be executed on the login node, you specify it as `localrule`.
+Basically, whenever you want a rule to be executed on the login node, you specify it as
+```python
+localrules: <your_rule_name>
+rule <your_rule_name>:
+    ...
+```
 Keep in mind that on the login node, only light computations should be performed, like e.g. compiles or downloads.
 Downloads are only possible on the login node, as the other nodes do not have a connection to the internet.
 
@@ -42,3 +47,19 @@ And you also need to rename the `scripts/delete_erroneous_outputs.py.tmpl` file 
 If you want to, you can also rename the `scripts/list_unsuccessful_slurm_logs.py.tmpl` file to `scripts/list_unsuccessful_slurm_logs.py`, and fill in the `<...>` entries inside.
 This script is useful if you have many rules and you want to find those that crashed.
 
+### Running `snakemake`
+
+Use the wrapper `scripts/run_on_turso.sh` to execute snakemake now.
+It will execute snakemake in the background, such that it keeps running even if you disconnect SSH.
+It will store all slurm logs in a directory `logs`, sorted by date, with a symlink `logs/latest` to the logs from the latest execution.
+Each log directory contains the output of snakemake in a file `run_on_turso.log`.
+
+You can pass arbitrary arguments to `scripts/run_on_turso.sh`, but the first argument must be the target (e.g. `report_all`), since otherwise some of the `-` arguments are passed to the shell instead of snakemake.
+An example command line to execute the example workflow would be:
+```shell
+scripts/run_on_turso.sh report_all
+```
+
+Using `less logs/latest/run_on_turso.log` you can track the progress of the latest execution of snakemake.
+
+**WARNING:** before starting snakemake again, always make sure that the previous snakemake process was terminated! You can check for that with e.g. `ps ux | grep snakemake`.
