@@ -20,7 +20,7 @@ except Exception as e:
 	sys.exit(0)
 
 for log_file in log_files:
-	if "practical-omnitigs" not in log_file:
+	if "<whatever string you replaced all occurences of 'snakemake-turso' in config/turso/config.yaml>" not in log_file:
 		continue
 
 	with open(log_file, 'r') as f:

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "Error: no snakemake target given"
+    exit 1
+fi
+
+source $HOME/.bashrc
+cd <absolute path to your project, e.g. /proj/<your uni login>/snakemake-turso>
+
+conda activate <name of your conda environment, e.g. snakemake-turso>
+
+# Remove erroneous outputs from previous run
+echo "Removing erroneous outputs from previous run"
+scripts/delete_erroneous_outputs.py
+
+# Create log directory
+LOGDIR="logs/$(date +"%FT%X")/"
+mkdir -p "$LOGDIR"
+LATEST_LOGDIR_SYMLINK="logs/latest"
+rm -f "$LATEST_LOGDIR_SYMLINK"
+ln -sr "$LOGDIR" "$LATEST_LOGDIR_SYMLINK"
+
+echo "Storing logs in directory $LOGDIR"
+echo "Also symlinked as $LATEST_LOGDIR_SYMLINK"
+echo "$LOGDIR" > .logdir
+
+echo "Creating jobs"
+
+echo "Arguments: $@" >> "$LOGDIR/run_on_turso.log"
+nohup snakemake --profile config/turso "$@" >> "$LOGDIR/run_on_turso.log" 2>&1 &
+
+echo "Started snakemake in background with PID $!"
