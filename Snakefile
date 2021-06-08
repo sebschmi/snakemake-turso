@@ -122,7 +122,10 @@ rule bcalm2:
                cpus = MAX_THREADS,
                # The federation queue your job should be placed in. This depends on which cluster you use, but at least vorna and ukko2 both have a "short" queue.
                queue = "short",
-    shell:  "bcalm -in {input.reads} -kmer-size {wildcards.k} -abundance-min 2"
+    shell:  """
+        bcalm -in {input.reads} -out {output.assembly} -kmer-size {wildcards.k} -abundance-min 2
+        mv '{output.assembly}.unitigs.fa' '{output.assembly}'
+    """
 
 #######################
 ###### Downloads ######
