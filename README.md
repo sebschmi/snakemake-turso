@@ -63,3 +63,5 @@ scripts/run_on_turso.sh report_all
 Using `less logs/latest/run_on_turso.log` you can track the progress of the latest execution of snakemake.
 
 **WARNING:** before starting snakemake again, always make sure that the previous snakemake process was terminated! You can check for that with e.g. `ps ux | grep snakemake`.
+
+**WARNING:** before starting snakemake again, always check if there are still any slurm jobs under your username! You can check for that with e.g. `squeue -o '%A %.28R %j' -u <your-username>`
