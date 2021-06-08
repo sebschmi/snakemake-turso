@@ -85,6 +85,7 @@ localrules: create_single_report
 rule create_single_report:
     input:  assembly = ASSEMBLY,
     output: report = REPORT,
+    conda:  "config/conda-biopython-env.yml"
     run:
         from Bio import SeqIO
         
