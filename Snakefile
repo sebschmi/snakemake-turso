@@ -57,6 +57,7 @@ print("Finished config preprocessing", flush = True)
 # Helps especially when there are many arguments.
 READS_SRA = os.path.join(DATADIR, "reads", "s{species}-k{k}", "sra", "reads.sra")
 READS_FASTA = os.path.join(DATADIR, "reads", "s{species}-k{k}", "fasta", "reads.fa")
+ASSEMBLY_SOURCE_READS = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "reads.fa")
 ASSEMBLY = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "assembly.fa")
 ASSEMBLY_LOG = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "assembly.log")
 REPORT = os.path.join(REPORTDIR, "s{species}-k{k}", "report.txt")
@@ -109,7 +110,7 @@ rule create_single_report:
 # queue = determine_queue_based_on_wildcards,
 # where determine_queue_based_on_wildcards is a function that takes a single argument 'wildcards' and returns a string.
 rule bcalm2:
-    input:  reads = READS_FASTA,
+    input:  reads = ASSEMBLY_SOURCE_READS,
     output: assembly = ASSEMBLY,
     log:    log = ASSEMBLY_LOG,
     conda:  "config/conda-bcalm2-env.yml",
@@ -162,6 +163,13 @@ rule convert_sra_download:
     output: file = READS_FASTA,
     conda:  "config/conda-convert-reads-env.yml"
     shell:  "fastq-dump --stdout --fasta default '{input.file}' > '{output.file}'"
+
+# I link the reads to each assembly directory separately, such that bcalm creates its auxiliary files in that directory instead of the download directory.
+localrules: download_reads
+rule download_reads:
+    input:  file = READS_FASTA,
+    output: file = ASSEMBLY_SOURCE_READS,
+    shell:  "ln -sr -T '{input.file}' '{output.file}'"
 
 ##############################
 ###### Download results ######
