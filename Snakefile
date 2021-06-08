@@ -102,7 +102,7 @@ rule bcalm2:
     output: assembly = ASSEMBLY,
     conda:  "config/conda-bcalm2-env.yml",
     params:
-            workdir = lambda wildcards, output: os.path.basename(output.assembly)
+            workdir = lambda wildcards, output: os.path.dirname(output.assembly)
     # The maximum number of threads usable by your rule. I am not sure if this is needed, since it is always the same as resources.cpus.
     threads: MAX_THREADS,
                # The amount of RAM your job needs at max. If your job requests more at any time, it will be killed.
@@ -150,6 +150,7 @@ rule download_sra_file:
         wget --progress=dot:mega -O '{output.file}' '{params.url}'
     """
 
+# If no resources are specified, the rule will use the default resources specified in config/turso/config.yml
 rule convert_sra_download:
     input:  file = READS_SRA,
     output: file = READS_FASTA,
