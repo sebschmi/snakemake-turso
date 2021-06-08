@@ -27,3 +27,18 @@ Keep in mind that on the login node, only light computations should be performed
 Downloads are only possible on the login node, as the other nodes do not have a connection to the internet.
 
 If you want to execute a rule on the cluster, you specify it as `rule`, and you need to add a `resources` section. Take a look at the `bcalm2` rule in the `Snakefile` for an example.
+
+## Running
+
+### Filling in templates
+
+First, you need to rename the `config/turso/config.yaml.tmpl` file to `config/turso/config.yaml`, and fill in the `<...>` entries inside.
+If you clone this repository into `$PROJ`, then you can take over most of the example values.
+
+Then you need to also rename the `scripts/run_on_turso.sh.tmpl` file to `scripts/run_on_turso.sh`, and again fill in the `<...>` entries inside.
+
+And you also need to rename the `scripts/delete_erroneous_outputs.py.tmpl` file to `scripts/delete_erroneous_outputs.py`, and again fill in the `<...>` entries inside.
+
+If you want to, you can also rename the `scripts/list_unsuccessful_slurm_logs.py.tmpl` file to `scripts/list_unsuccessful_slurm_logs.py`, and fill in the `<...>` entries inside.
+This script is useful if you have many rules and you want to find those that crashed.
+
