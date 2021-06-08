@@ -12,11 +12,11 @@ else
 fi
 
 echo "Checking if there are any existing slurm jobs"
-if [ -z "$(squeue -o '%A %.28R %j' -u $(whoami))" ]; then
+if [ -z "$(squeue -o '%A %.28R %j' -u $(whoami) | tail -n +2)" ]; then
     echo "No slurm jobs found"
 else
     echo "Found slurm jobs"
-    squeue -o '%A %.28R %j' -u $(whoami))
+    squeue -o '%A %.28R %j' -u $(whoami)
     exit 1
 fi
 

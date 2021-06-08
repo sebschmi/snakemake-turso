@@ -155,7 +155,6 @@ rule download_sra_file:
         wget --progress=dot:mega -O '{output.file}' '{params.url}'
     """
 
-localrules: convert_sra_download
 rule convert_sra_download:
     input:  file = READS_SRA,
     output: file = READS_FASTA,
