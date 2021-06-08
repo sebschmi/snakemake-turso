@@ -59,7 +59,6 @@ READS_SRA = os.path.join(DATADIR, "reads", "s{species}", "sra", "reads.sra")
 READS_FASTA = os.path.join(DATADIR, "reads", "s{species}", "fasta", "reads.fa")
 ASSEMBLY_SOURCE_READS = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "reads.fa")
 ASSEMBLY = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "assembly.fa")
-ASSEMBLY_LOG = os.path.join(DATADIR, "assembly", "s{species}-k{k}", "assembly.log")
 REPORT = os.path.join(REPORTDIR, "s{species}-k{k}", "report.txt")
 
 #################################
@@ -112,7 +111,6 @@ rule create_single_report:
 rule bcalm2:
     input:  reads = ASSEMBLY_SOURCE_READS,
     output: assembly = ASSEMBLY,
-    log:    log = ASSEMBLY_LOG,
     conda:  "config/conda-bcalm2-env.yml",
     # The maximum number of threads usable by your rule. I am not sure if this is needed, since it is always the same as resources.cpus.
     threads: MAX_THREADS,
@@ -124,7 +122,7 @@ rule bcalm2:
                cpus = MAX_THREADS,
                # The federation queue your job should be placed in. This depends on which cluster you use, but at least vorna and ukko2 both have a "short" queue.
                queue = "short",
-    shell:  "bcalm -in {input.reads} -kmer-size {wildcards.k} -abundance-min 2 > 'ASSEMBLY_LOG' 2>&1"
+    shell:  "bcalm -in {input.reads} -kmer-size {wildcards.k} -abundance-min 2"
 
 #######################
 ###### Downloads ######
