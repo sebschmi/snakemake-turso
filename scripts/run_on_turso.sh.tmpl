@@ -4,7 +4,7 @@ set +e
 
 echo "Checking for running snakemake"
 ps ux | grep -F "bin/snakemake " | grep -v grep
-if ! ${PIPESTATUS[2]}; then
+if [ "${PIPESTATUS[2]}" -ne "0" ]; then
         echo "No snakemake found"
 else
         echo "Snakemake is already running!"
