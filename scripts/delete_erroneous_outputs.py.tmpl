@@ -14,7 +14,7 @@ def silentremove(filename):
         else:
             shutil.rmtree(filename)
         print("Removed {}".format(filename))
-    except OSError as e: # this would be "except OSError, e:" before Python 2.6
+    except OSError as e:
         if e.errno != errno.ENOENT: # errno.ENOENT = no such file or directory
             raise # re-raise exception if a different error occurred
 log_path = "logs/latest"
@@ -23,7 +23,11 @@ if len(sys.argv) >= 2:
 	log_path = sys.argv[1]
 
 try:
-	log_files = [join(log_path, f) for f in listdir(log_path) if isfile(join(log_path, f))]
+	try:
+		log_files = [join(log_path, f) for f in listdir(log_path) if isfile(join(log_path, f))]
+	except OSError as e:
+		if e.errno != errno.ENOENT: # errno.ENOENT = no such file or directory
+			raise
 except Exception as e:
 	print("Could not list log files")
 	print(e)

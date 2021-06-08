@@ -112,7 +112,7 @@ rule bcalm2:
     input:  reads = READS_FASTA,
     output: assembly = ASSEMBLY,
     log:    log = ASSEMBLY_LOG,
-    conda:  "config/conda_bcalm2_env.yml",
+    conda:  "config/conda-bcalm2-env.yml",
     # The maximum number of threads usable by your rule. I am not sure if this is needed, since it is always the same as resources.cpus.
     threads: MAX_THREADS,
                # The amount of RAM your job needs at max. If your job requests more at any time, it will be killed.
