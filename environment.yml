@@ -1,0 +1,6 @@
+name: snakemake-turso # you probably want to change this name if you change this environment
+channels:
+        - conda-forge
+        - bioconda
+dependencies: 
+        - snakemake==6.3.0
